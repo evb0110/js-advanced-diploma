@@ -1,6 +1,5 @@
 import { calcHealthLevel, calcTileType } from './utils';
 
-
 export default class GamePlay {
   constructor() {
     this.boardSize = 8;
