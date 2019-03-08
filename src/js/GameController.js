@@ -10,6 +10,10 @@ export default class GameController {
     // TODO: add event listeners to gamePlay events
     // TODO: load saved states from stateService
     this.gamePlay.drawUi(themes.prairie);
+    this.gamePlay.addCellEnterListener(this.onCellEnter);
+    this.gamePlay.addCellLeaveListener(this.onCellClick);
+    this.gamePlay.addCellClickListener(this.onCellClick);
+
   }
 
   onCellClick(index) {
@@ -18,6 +22,7 @@ export default class GameController {
 
   onCellEnter(index) {
     // TODO: react to mouse enter
+    
   }
 
   onCellLeave(index) {
