@@ -13,7 +13,7 @@ export default class GameController {
     this.gamePlay.addCellEnterListener(this.onCellEnter);
     this.gamePlay.addCellLeaveListener(this.onCellClick);
     this.gamePlay.addCellClickListener(this.onCellClick);
-
+    
   }
 
   onCellClick(index) {
@@ -22,7 +22,7 @@ export default class GameController {
 
   onCellEnter(index) {
     // TODO: react to mouse enter
-    
+
   }
 
   onCellLeave(index) {

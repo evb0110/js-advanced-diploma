@@ -16,7 +16,7 @@ export function* characterGenerator(allowedTypes, maxLevel) {
 export function generateTeam(allowedTypes, maxLevel, characterCount) {
   const team = [];
   const characterIterator = characterGenerator(allowedTypes, maxLevel);
-  const counter = 1;
+  let counter = 1;
   for (const character of characterIterator) {
     if (counter > characterCount) break;
     team.push(character);
