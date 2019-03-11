@@ -18,15 +18,16 @@ export default class GameController {
     // TODO: add event listeners to gamePlay events
     // TODO: load saved states from stateService
     this.gamePlay.drawUi(themes.prairie);
-    this.gamePlay.addCellEnterListener(this.onCellEnter);
-    this.gamePlay.addCellLeaveListener(this.onCellClick);
-    this.gamePlay.addCellClickListener(this.onCellClick);
+    this.gamePlay.addCellEnterListener(this.onCellEnter.bind(this));
+    this.gamePlay.addCellClickListener(this.onCellClick.bind(this));
+    this.gamePlay.addCellLeaveListener(this.onCellLeave.bind(this));
 
     const allowedTypes = [Bowman, Daemon, Magician, Swordsman, Undead, Vampire];
     const team = generateTeam(allowedTypes, 1, 2);
-    const char0 = new PositionedCharacter(team[0], 56);
-    const char1 = new PositionedCharacter(team[1], 57);
-    this.gamePlay.redrawPositions([char0, char1]);
+    this.positions = [];
+    this.positions[0] = new PositionedCharacter(team[0], 56);
+    this.positions[1] = new PositionedCharacter(team[1], 57);
+    this.gamePlay.redrawPositions([this.positions[0], this.positions[1]]);
   }
 
   onCellClick(index) {
@@ -35,6 +36,10 @@ export default class GameController {
 
   onCellEnter(index) {
     // TODO: react to mouse enter
+    const characters = this.positions.filter(pos => pos.position === index);
+    if (characters.length) {
+      this.gamePlay.showCellTooltip('Hi', index);
+    }
   }
 
   onCellLeave(index) {

@@ -1,6 +1,5 @@
 import Character from '../Character';
 import characters from './characters'
-console.log(characters);
 
 export default class Bowman extends Character {
   constructor(level) {
