@@ -1,5 +1,7 @@
 import themes from './themes';
 import generateTeam from './generators';
+import tooltips from './helpers/tooltips';
+
 import Bowman from './characters/Bowman';
 import Daemon from './characters/Daemon';
 import Magician from './characters/Magician';
@@ -36,9 +38,11 @@ export default class GameController {
 
   onCellEnter(index) {
     // TODO: react to mouse enter
-    const characters = this.positions.filter(pos => pos.position === index);
-    if (characters.length) {
-      this.gamePlay.showCellTooltip('Hi', index);
+    const posCharacter = this.positions.filter(pos => pos.position === index);
+    if (posCharacter.length) {
+      const { level, attack, defence, health } = posCharacter[0].character
+      const message = tooltips({ level, attack, defence, health });
+      this.gamePlay.showCellTooltip(message, index);
     }
   }
 
