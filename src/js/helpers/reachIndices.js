@@ -27,8 +27,6 @@ export function attackIndices(type, boardSize, index) {
   return reachIndices(reachCount, boardSize, index);
 }
 
-// console.log(moveIndices('daemon', 8, 28));
-
 function reachIndices(reachCount, boardSize, index) {
   const result = [];
   for (let i = 1; i <= reachCount; i++) {
