@@ -1,6 +1,8 @@
 import themes from './themes';
 import generateTeam from './generators';
 import tooltips from './helpers/tooltips';
+import GamePlay from './GamePlay';
+import GameState from './GameState';
 
 import Bowman from './characters/Bowman';
 import Daemon from './characters/Daemon';
@@ -34,19 +36,40 @@ export default class GameController {
 
   onCellClick(index) {
     // TODO: react to click
+    const posCharacter = this.positions.filter(pos => pos.position === index);
+    if (
+      posCharacter.length
+      && ['bowman', 'swordsman', 'magician'].includes(posCharacter[0].character.type)
+    ) {
+      if (this.selected) {
+        this.gamePlay.deselectCell(this.selected);
+      }
+      this.gamePlay.selectCell(index);
+      this.selected = index;
+    } else {
+      GamePlay.showError('You can only select a playable character');
+    }
   }
 
   onCellEnter(index) {
     // TODO: react to mouse enter
     const posCharacter = this.positions.filter(pos => pos.position === index);
     if (posCharacter.length) {
-      const { level, attack, defence, health } = posCharacter[0].character
-      const message = tooltips({ level, attack, defence, health });
+      const {
+        level, attack, defence, health,
+      } = posCharacter[0].character;
+      const message = tooltips({
+        level,
+        attack,
+        defence,
+        health,
+      });
       this.gamePlay.showCellTooltip(message, index);
     }
   }
 
   onCellLeave(index) {
     // TODO: react to mouse leave
+    this.gamePlay.hideCellTooltip(index);
   }
 }
