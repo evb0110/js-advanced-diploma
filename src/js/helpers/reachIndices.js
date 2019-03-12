@@ -65,4 +65,3 @@ function sameRow(idx1, idx2, boardSize) {
   return Math.floor(idx1 / boardSize) === Math.floor(idx2 / boardSize);
 }
 
-// export default moveIndices;
