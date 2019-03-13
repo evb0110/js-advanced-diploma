@@ -95,7 +95,7 @@ export default class GameController {
       } else if (attackIdxs.includes(index) && currentPosCharacter.length) {
         this.gamePlay.setCursor(cursors.crosshair);
         this.gamePlay.redCell(index);
-      } else {
+      } else if(index !== this.selected) {
         this.gamePlay.setCursor(cursors.notallowed);
       }
     }
