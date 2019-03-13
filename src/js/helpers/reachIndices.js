@@ -1,7 +1,4 @@
-import {
-  numberToPair,
-  pairToNumber
-} from './pairsAndNumbers';
+import { numberToPair, pairToNumber } from './pairsAndNumbers';
 
 const moveReach = {
   swordsman: 4,
@@ -21,31 +18,21 @@ const attackReach = {
   daemon: 4,
 };
 
-export function moveIndices(type, boardSize, index) {
-  const reachCount = moveReach[type];
-
-  return reachIndices(reachCount, boardSize, index);
-}
-
 export function attackIndices(type, boardSize, index) {
   const resultPairs = [];
   const reachCount = attackReach[type];
-  let [row, column] = numberToPair(boardSize, index);
+  const [row, column] = numberToPair(boardSize, index);
   for (let i = row - reachCount; i <= row + reachCount; i++) {
     for (let j = column - reachCount; j <= column + reachCount; j++) {
-      if (i > 0 
-          && i < boardSize 
-          && j > 0 
-          && j < boardSize 
-          && !(i === row && j === column)
-          ) 
-          resultPairs.push([i, j])
+      if (i >= 0 && i < boardSize && j >= 0 && j < boardSize && !(i === row && j === column)) resultPairs.push([i, j]);
     }
   }
   return resultPairs.map(pair => pairToNumber(boardSize, pair));
 }
 
-function reachIndices(reachCount, boardSize, index) {
+
+export function moveIndices(type, boardSize, index) {
+  const reachCount = moveReach[type];
   const result = [];
   for (let i = 1; i <= reachCount; i++) {
     const left = index - i;

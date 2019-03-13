@@ -11,7 +11,7 @@ import Daemon from './characters/Daemon';
 import Magician from './characters/Magician';
 import Swordsman from './characters/Swordsman';
 import Undead from './characters/Undead';
-import Vampire from './characters/Bowman';
+import Vampire from './characters/Vampire';
 import PositionedCharacter from './PositionedCharacter';
 
 export default class GameController {
@@ -28,12 +28,13 @@ export default class GameController {
     this.gamePlay.addCellClickListener(this.onCellClick.bind(this));
     this.gamePlay.addCellLeaveListener(this.onCellLeave.bind(this));
 
-    const allowedTypes = [Bowman, Daemon, Magician, Swordsman, Undead, Vampire];
-    const humanTeam = generateTeam(allowedTypes, 1, 2);
+    const humanAllowedTypes = [Bowman, Magician, Swordsman];
+    const computerAllowedTypes = [Daemon, Undead, Vampire];
+    const humanTeam = generateTeam(humanAllowedTypes, 1, 2);
     this.positions = [];
     this.positions[0] = new PositionedCharacter(humanTeam[0], 56);
-    this.positions[1] = new PositionedCharacter(humanTeam[1], 57);
-    const computerTeam = generateTeam(allowedTypes, 1, 2);
+    this.positions[1] = new PositionedCharacter(humanTeam[1], 41);
+    const computerTeam = generateTeam(computerAllowedTypes, 1, 2);
     this.positions[2] = new PositionedCharacter(computerTeam[0], 62);
     this.positions[3] = new PositionedCharacter(computerTeam[1], 63);
     this.gamePlay.redrawPositions(this.positions);
