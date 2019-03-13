@@ -82,7 +82,10 @@ export default class GamePlay {
       healthEl.classList.add('health-level');
 
       const healthIndicatorEl = document.createElement('div');
-      healthIndicatorEl.classList.add('health-level-indicator', `health-level-indicator-${calcHealthLevel(position.character.health)}`);
+      healthIndicatorEl.classList.add(
+        'health-level-indicator',
+        `health-level-indicator-${calcHealthLevel(position.character.health)}`,
+      );
       healthIndicatorEl.style.width = `${position.character.health}%`;
       healthEl.appendChild(healthIndicatorEl);
 
@@ -190,10 +193,33 @@ export default class GamePlay {
     this.cells[index].classList.add('selected', `selected-${color}`);
   }
 
+  greenCell(index, color = 'green') {
+    this.deselectCell(index);
+    this.cells[index].classList.add('selected', `selected-${color}`);
+  }
+
+  redCell(index, color = 'red') {
+    this.deselectCell(index);
+    this.cells[index].classList.add('selected', `selected-${color}`);
+  }
+
   deselectCell(index) {
     const cell = this.cells[index];
-    cell.classList.remove(...Array.from(cell.classList)
-      .filter(o => o.startsWith('selected')));
+    cell.classList.remove(...Array.from(cell.classList).filter(o => o.startsWith('selected')));
+  }
+
+  degreenCell(index) {
+    const cell = this.cells[index];
+    if (Array.from(cell.classList).includes('selected-green')) {
+      cell.classList.remove(...Array.from(cell.classList).filter(o => o.startsWith('selected')));
+    }
+  }
+
+  deredCell(index) {
+    const cell = this.cells[index];
+    if (Array.from(cell.classList).includes('selected-red')) {
+      cell.classList.remove(...Array.from(cell.classList).filter(o => o.startsWith('selected')));
+    }
   }
 
   showCellTooltip(message, index) {

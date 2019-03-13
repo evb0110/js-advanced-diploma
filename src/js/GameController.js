@@ -1,8 +1,10 @@
 import themes from './themes';
 import generateTeam from './generators';
 import tooltips from './helpers/tooltips';
+import { moveIndices, attackIndices } from './helpers/reachIndices';
 import GamePlay from './GamePlay';
 import GameState from './GameState';
+import cursors from './cursors';
 
 import Bowman from './characters/Bowman';
 import Daemon from './characters/Daemon';
@@ -27,11 +29,14 @@ export default class GameController {
     this.gamePlay.addCellLeaveListener(this.onCellLeave.bind(this));
 
     const allowedTypes = [Bowman, Daemon, Magician, Swordsman, Undead, Vampire];
-    const team = generateTeam(allowedTypes, 1, 2);
+    const humanTeam = generateTeam(allowedTypes, 1, 2);
     this.positions = [];
-    this.positions[0] = new PositionedCharacter(team[0], 56);
-    this.positions[1] = new PositionedCharacter(team[1], 57);
-    this.gamePlay.redrawPositions([this.positions[0], this.positions[1]]);
+    this.positions[0] = new PositionedCharacter(humanTeam[0], 56);
+    this.positions[1] = new PositionedCharacter(humanTeam[1], 57);
+    const computerTeam = generateTeam(allowedTypes, 1, 2);
+    this.positions[2] = new PositionedCharacter(computerTeam[0], 62);
+    this.positions[3] = new PositionedCharacter(computerTeam[1], 63);
+    this.gamePlay.redrawPositions(this.positions);
   }
 
   onCellClick(index) {
@@ -65,11 +70,41 @@ export default class GameController {
         health,
       });
       this.gamePlay.showCellTooltip(message, index);
+      this.gamePlay.setCursor(cursors.pointer);
+    } else {
+      this.gamePlay.setCursor(cursors.auto);
+    }
+
+    if (this.selected) {
+      const selectedPosCharacter = this.positions.filter(pos => pos.position === this.selected);
+      const currentPosCharacter = this.positions.filter(pos => pos.position === index);
+      const moveIdxs = moveIndices(
+        selectedPosCharacter[0].character.type,
+        this.gamePlay.boardSize,
+        this.selected,
+      );
+      const attackIdxs = attackIndices(
+        selectedPosCharacter[0].character.type,
+        this.gamePlay.boardSize,
+        this.selected,
+      );
+
+      if (moveIdxs.includes(index) && !currentPosCharacter.length) {
+        this.gamePlay.setCursor(cursors.pointer);
+        this.gamePlay.greenCell(index);
+      } else if (attackIdxs.includes(index) && currentPosCharacter.length) {
+        this.gamePlay.setCursor(cursors.crosshair);
+        this.gamePlay.redCell(index);
+      } else {
+        this.gamePlay.setCursor(cursors.notallowed);
+      }
     }
   }
 
   onCellLeave(index) {
     // TODO: react to mouse leave
     this.gamePlay.hideCellTooltip(index);
+    this.gamePlay.degreenCell(index);
+    this.gamePlay.deredCell(index);
   }
 }
