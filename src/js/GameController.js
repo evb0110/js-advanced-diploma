@@ -1,10 +1,11 @@
 import themes from './themes';
-import generateTeam from './generators';
+import generateTeam, { generatePosition, generateTeamPositions } from './generators';
 import tooltips from './helpers/tooltips';
 import { moveIndices, attackIndices } from './helpers/reachIndices';
 import GamePlay from './GamePlay';
 import GameState from './GameState';
 import cursors from './cursors';
+import { pairToNumber, numberToPair } from './helpers/pairsAndNumbers';
 
 import Bowman from './characters/Bowman';
 import Daemon from './characters/Daemon';
@@ -31,12 +32,17 @@ export default class GameController {
     const humanAllowedTypes = [Bowman, Magician, Swordsman];
     const computerAllowedTypes = [Daemon, Undead, Vampire];
     const humanTeam = generateTeam(humanAllowedTypes, 1, 2);
-    this.positions = [];
-    this.positions[0] = new PositionedCharacter(humanTeam[0], 56);
-    this.positions[1] = new PositionedCharacter(humanTeam[1], 41);
     const computerTeam = generateTeam(computerAllowedTypes, 1, 2);
-    this.positions[2] = new PositionedCharacter(computerTeam[0], 62);
-    this.positions[3] = new PositionedCharacter(computerTeam[1], 63);
+    const humanTeamPositions = generateTeamPositions([0, 8], [0, 1], 2);
+    const computerTeamPositions = generateTeamPositions([0, 8], [6, 7], 2);
+    this.positions = [];
+
+
+    this.positions[0] = new PositionedCharacter(humanTeam[0], humanTeamPositions[0]);
+    this.positions[1] = new PositionedCharacter(humanTeam[1], humanTeamPositions[1]);
+
+    this.positions[2] = new PositionedCharacter(computerTeam[0], computerTeamPositions[0]);
+    this.positions[3] = new PositionedCharacter(computerTeam[1], computerTeamPositions[1]);
     this.gamePlay.redrawPositions(this.positions);
   }
 
@@ -96,7 +102,7 @@ export default class GameController {
       } else if (attackIdxs.includes(index) && currentPosCharacter.length) {
         this.gamePlay.setCursor(cursors.crosshair);
         this.gamePlay.redCell(index);
-      } else if(index !== this.selected) {
+      } else if (index !== this.selected) {
         this.gamePlay.setCursor(cursors.notallowed);
       }
     }

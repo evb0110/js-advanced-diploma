@@ -1,3 +1,5 @@
+import { pairToNumber, numberToPair } from './helpers/pairsAndNumbers';
+
 /**
  * Generates random characters
  *
@@ -23,4 +25,22 @@ export default function generateTeam(allowedTypes, maxLevel, characterCount) {
     counter++;
   }
   return team;
+}
+
+export function* generatePosition([iMin, iMax], [jMin, jMax]) {
+  while (true) {
+    const i = iMin + Math.floor(Math.random() * (iMax - iMin + 1));
+    const j = jMin + Math.floor(Math.random() * (jMax - jMin + 1));
+    yield pairToNumber(8, [i, j]);
+  }
+}
+
+export function generateTeamPositions([iMin, iMax], [jMin, jMax], characterCount) {
+  const teamPositions = [];
+  const positionIterator = generatePosition([iMin, iMax], [jMin, jMax]);
+  for (const position of positionIterator) {
+    if (teamPositions.length >= characterCount) break;
+    if (!teamPositions.includes(position)) teamPositions.push(position)
+  }
+  return teamPositions;
 }
