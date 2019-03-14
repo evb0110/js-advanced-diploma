@@ -33,8 +33,8 @@ export default class GameController {
     const computerAllowedTypes = [Daemon, Undead, Vampire];
     const humanTeam = generateTeam(humanAllowedTypes, 1, 2);
     const computerTeam = generateTeam(computerAllowedTypes, 1, 2);
-    const humanTeamPositions = generateTeamPositions([0, 8], [0, 1], 2);
-    const computerTeamPositions = generateTeamPositions([0, 8], [6, 7], 2);
+    const humanTeamPositions = generateTeamPositions([0, 7], [0, 1], 2);
+    const computerTeamPositions = generateTeamPositions([0, 7], [6, 7], 2);
     this.positions = [];
 
 
