@@ -44,7 +44,7 @@ export function moveIndices(type, boardSize, index) {
     if (rightFlag) result.push(right);
 
     const up = index - boardSize * i;
-    const upFlag = up > 0;
+    const upFlag = up >= 0;
     if (upFlag) result.push(up);
 
     const down = index + boardSize * i;

@@ -1,13 +1,7 @@
 import themes from './themes';
-import generateTeam, {
-  generatePosition,
-  generateTeamPositions
-} from './generators';
+import generateTeam, { generateTeamPositions } from './generators';
 import tooltips from './helpers/tooltips';
-import {
-  moveIndices,
-  attackIndices
-} from './helpers/reachIndices';
+import { moveIndices, attackIndices } from './helpers/reachIndices';
 import GamePlay from './GamePlay';
 import GameState from './GameState';
 import cursors from './cursors';
@@ -49,7 +43,11 @@ export default class GameController {
     const computerTeam = generateTeam(computerAllowedTypes, 1, 2);
 
     const humanTeamPositions = generateTeamPositions([0, boardSize - 1], [0, 1], 2);
-    const computerTeamPositions = generateTeamPositions([0, boardSize - 1], [boardSize - 2, boardSize - 1], 2);
+    const computerTeamPositions = generateTeamPositions(
+      [0, boardSize - 1],
+      [boardSize - 2, boardSize - 1],
+      2,
+    );
 
     this.humanPositionedTeam = [];
     this.computerPositionedTeam = [];
@@ -59,7 +57,10 @@ export default class GameController {
       this.humanPositionedTeam.push(positionedCharacter);
     });
     computerTeam.forEach((computerCharacter, i) => {
-      const positionedCharacter = new PositionedCharacter(computerCharacter, computerTeamPositions[i]);
+      const positionedCharacter = new PositionedCharacter(
+        computerCharacter,
+        computerTeamPositions[i],
+      );
       this.computerPositionedTeam.push(positionedCharacter);
     });
 
@@ -70,10 +71,10 @@ export default class GameController {
     // TODO: react to click
     const posCharacter = this.positions.filter(pos => pos.position === index);
     if (
-      posCharacter.length &&
-      ['bowman', 'swordsman', 'magician'].includes(posCharacter[0].character.type)
+      posCharacter.length
+      && ['bowman', 'swordsman', 'magician'].includes(posCharacter[0].character.type)
     ) {
-      if (this.selected) {
+      if (this.selected !== undefined) {
         this.gamePlay.deselectCell(this.selected);
       }
       this.gamePlay.selectCell(index);
@@ -88,10 +89,7 @@ export default class GameController {
     const posCharacter = this.positions.filter(pos => pos.position === index);
     if (posCharacter.length) {
       const {
-        level,
-        attack,
-        defence,
-        health,
+        level, attack, defence, health,
       } = posCharacter[0].character;
       const message = tooltips({
         level,
@@ -105,7 +103,7 @@ export default class GameController {
       this.gamePlay.setCursor(cursors.auto);
     }
 
-    if (this.selected) {
+    if (this.selected !== undefined) {
       const selectedPosCharacter = this.positions.filter(pos => pos.position === this.selected);
       const currentPosCharacter = this.positions.filter(pos => pos.position === index);
       const moveIdxs = moveIndices(
