@@ -79,6 +79,9 @@ export default class GameController {
       }
       this.gamePlay.selectCell(index);
       this.selectedPosCharacter = posCharacter[0];
+    // } else if (!posCharacter.length) {
+    //   this.selectedPosCharacter = {...this.selectedPosCharacter, position: index} 
+    //   this.gamePlay.redrawPositions(this.positions);
     } else {
       GamePlay.showError('You can only select a playable character');
     }
