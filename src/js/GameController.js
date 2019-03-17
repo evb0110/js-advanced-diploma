@@ -74,11 +74,11 @@ export default class GameController {
       posCharacter.length
       && ['bowman', 'swordsman', 'magician'].includes(posCharacter[0].character.type)
     ) {
-      if (this.selected !== undefined) {
-        this.gamePlay.deselectCell(this.selected);
+      if (this.selectedPosCharacter !== undefined) {
+        this.gamePlay.deselectCell(this.selectedPosCharacter.position);
       }
       this.gamePlay.selectCell(index);
-      this.selected = index;
+      this.selectedPosCharacter = posCharacter[0];
     } else {
       GamePlay.showError('You can only select a playable character');
     }
@@ -103,18 +103,17 @@ export default class GameController {
       this.gamePlay.setCursor(cursors.auto);
     }
 
-    if (this.selected !== undefined) {
-      const selectedPosCharacter = this.positions.filter(pos => pos.position === this.selected);
+    if (this.selectedPosCharacter !== undefined) {
       const currentPosCharacter = this.positions.filter(pos => pos.position === index);
       const moveIdxs = moveIndices(
-        selectedPosCharacter[0].character.type,
+        this.selectedPosCharacter.character.type,
         this.gamePlay.boardSize,
-        this.selected,
+        this.selectedPosCharacter.position,
       );
       const attackIdxs = attackIndices(
-        selectedPosCharacter[0].character.type,
+        this.selectedPosCharacter.character.type,
         this.gamePlay.boardSize,
-        this.selected,
+        this.selectedPosCharacter.position,
       );
 
       if (moveIdxs.includes(index) && !currentPosCharacter.length) {
@@ -123,7 +122,7 @@ export default class GameController {
       } else if (attackIdxs.includes(index) && currentPosCharacter.length) {
         this.gamePlay.setCursor(cursors.crosshair);
         this.gamePlay.redCell(index);
-      } else if (index !== this.selected) {
+      } else if (index !== this.selectedPosCharacter.position) {
         this.gamePlay.setCursor(cursors.notallowed);
       }
     }
