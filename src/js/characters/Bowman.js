@@ -1,11 +1,8 @@
-import Character from '../Character';
+import Character from './Character';
 import characters from './characters'
 
 export default class Bowman extends Character {
-  constructor(level) {
-    const type = characters.bowman;
-    super(level, type);
-    this.attack = 25;
-    this.defence = 25;
+  constructor(level, type = characters.bowman, attack = 25, defence = 20, health) {
+    super(level, type, attack, defence, health);
   }
 }
